@@ -55,6 +55,17 @@ app.post("/api/workouts", (req, res) => {
         });
 });
 
+app.get("/api/workouts/range", (req, res) => {
+    db.Workout.find({})
+        .then(dbWorkout => {
+            if(dbWorkout.length <= 7) {
+                res.json(dbWorkout);
+            }
+            else {
+                res.json(dbWorkout.slice(dbWorkout.length-8));
+            }
+        })
+})
 
 // Start the server
 app.listen(PORT, () => {
