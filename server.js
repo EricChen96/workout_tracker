@@ -13,7 +13,16 @@ app.use(express.json());
 
 app.use(express.static("public", { extensions: "html" }));
 
-mongoose.connect(process.env.MONGODB_URI || "mongodb://localhost/workout", { useNewUrlParser: true });
+mongoose.connect(
+    process.env.MONGODB_URI || 'mongodb://localhost/workout',
+    {
+      useNewUrlParser: true,
+      useUnifiedTopology: true,
+      useCreateIndex: true,
+      useFindAndModify: false
+    }
+  );
+  
 
 //THIS WORKS
 app.get("/api/workouts", (req, res) => {
@@ -58,12 +67,13 @@ app.post("/api/workouts", (req, res) => {
 app.get("/api/workouts/range", (req, res) => {
     db.Workout.find({})
         .then(dbWorkout => {
-            if(dbWorkout.length <= 7) {
-                res.json(dbWorkout);
-            }
-            else {
-                res.json(dbWorkout.slice(dbWorkout.length-8));
-            }
+            // if(dbWorkout.length <= 7) {
+            //     res.json(dbWorkout);
+            // }
+            // else {
+            //     res.json(dbWorkout.slice(dbWorkout.length-7));
+            // }
+            res.json(dbWorkout.slice(dbWorkout.length-7));
         })
 })
 
